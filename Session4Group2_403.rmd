@@ -2,9 +2,12 @@
 title: "LiveSession4"
 author: "Mike Martos"
 date: "June 1, 2016"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
+```{r}
 require(gdata)
 require(plyr)
 
@@ -17,7 +20,7 @@ library(gdata)
 bk <- read.xls("Analysis/Data/rollingsales_bronx.xls",pattern="BOROUGH",perl="C:/strawberry/perl/bin/perl.exe")
 
 # So, save the file as a csv and use read.csv instead
-bk <- read.csv("rollingsales_brooklyn.csv",skip=4,header=TRUE)
+#bk <- read.csv("rollingsales_brooklyn.csv",skip=4,header=TRUE)
 
 ## Check the data
 head(bk)
@@ -34,6 +37,9 @@ str(bk) # Very handy function!
 #Removes the $ from the values to convert them into numeric values
 bk$SALE.PRICE.N <- as.numeric(gsub("[^[:digit:]]","", bk$SALE.PRICE))
 count(is.na(bk$SALE.PRICE.N))
+#This works as well but for just "$" and "," cases
+#bk$SALE.PRICE.N1 <- as.numeric(gsub("[:$:,:]","", bk$SALE.PRICE)) 
+
 
 # make all variable names lower case
 names(bk) <- tolower(names(bk)) 
@@ -65,7 +71,7 @@ summary(bk.homes[which(bk.homes$sale.price.n<100000),])
 bk.homes$outliers <- (log10(bk.homes$sale.price.n) <=5) + 0
 bk.homes <- bk.homes[which(bk.homes$outliers==0),]
 plot(log(bk.homes$gross.sqft),log(bk.homes$sale.price.n))
-
+```
 
 
 
